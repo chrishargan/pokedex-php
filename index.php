@@ -74,98 +74,89 @@ if( isset($_GET["pokemon"])) {
 }
 
 ?>
+<video playsinline autoplay loop muted >
+    <source src="assets/pokeballBG.mp4" type="video/mp4" />
+</video>
 
-<div class="video-container">
-    <video autoplay loop muted>
-        <source src="Pokedex-php/assets/pokeballBG.mp4" type="video/mp4" />
-    </video>
-</div>
-<div class="grid-container ">
-    <div class="pokedex-logo">
-        <img
-                class="pokedex-logo"
-                src="Pokedex-php/assets/pokedexlogo.png"
-                alt="Pokedex logo"
-        />
-    </div>
-    <div class="pokemon-images">
-        <?php
-        if( isset($_GET["pokemon"])){
-            echo "<img src='" . $response["sprites"]["front_default"] . " '> <img src='" . $response["sprites"]["back_default"] ."'>";
-            echo "<hr>";
-            echo "<img src='" . $firstEvolutionSprite["sprites"]["front_default"] . " '>";
-            if ($secondEvolution) {
-                foreach ($secondEvolution as $evolvedForm) {
-                    $evolvedData = file_get_contents($api . "pokemon/" . $evolvedForm["species"]["name"]);
-                    $evolvedResponse = json_decode($evolvedData, true);
-                    echo "<img src='" . $evolvedResponse["sprites"]["front_default"] . "'>";
+<header class="pokedex-logo">
+    <img class="pokedex-logo" src="assets/pokedexlogo.png" alt="Logo for the pokedex">
+</header>
+<div class="main">
+    <div class="grid-container">
+        <div class="pokemon-images">
+            <?php
+            if( isset($_GET["pokemon"])){
+                echo "<img src='" . $response["sprites"]["front_default"] . " '> <img src='" . $response["sprites"]["back_default"] ."'>";
+                echo "<hr>";
+                echo "<img src='" . $firstEvolutionSprite["sprites"]["front_default"] . " '>";
+                if ($secondEvolution) {
+                    foreach ($secondEvolution as $evolvedForm) {
+                        $evolvedData = file_get_contents($api . "pokemon/" . $evolvedForm["species"]["name"]);
+                        $evolvedResponse = json_decode($evolvedData, true);
+                        echo "<img src='" . $evolvedResponse["sprites"]["front_default"] . "'>";
 
+                    }
+                }
+                if ($thirdEvolution) {
+                    foreach ($thirdEvolution as $evolvedForm) {
+                        $evolvedData = file_get_contents($api . "pokemon/" . $evolvedForm["species"]["name"]);
+                        $evolvedResponse = json_decode($evolvedData, true);
+                        echo "<img src='" . $evolvedResponse["sprites"]["front_default"] . "'>";
+
+                    }
+                }
+
+            }
+
+            ?>
+        </div>
+        <div class="pokemon-data">
+            <?php
+            if( isset($_GET["pokemon"])){
+                echo '<h2>' . $response["forms"]["0"]["name"] . ' #' . $response["id"] ."</h2>";
+                echo "<br>";
+                foreach ($types as $type) {
+                    echo $type["type"]["name"] . "<br>";
+                }
+                echo "<br>";
+                echo "<br>". $flavourEnglish[array_rand($flavourEnglish, 1)] . "<br>";
+                echo "<br>";
+                foreach (array_rand($moves, 4)as $index ) {
+                    echo $moves[$index]["move"]["name"] . "<br>";
                 }
             }
-            if ($thirdEvolution) {
-                foreach ($thirdEvolution as $evolvedForm) {
-                    $evolvedData = file_get_contents($api . "pokemon/" . $evolvedForm["species"]["name"]);
-                    $evolvedResponse = json_decode($evolvedData, true);
-                    echo "<img src='" . $evolvedResponse["sprites"]["front_default"] . "'>";
-
-                }
-            }
-
-        }
-
-        ?>
-    </div>
-    <div class="pokemon-data">
-        <?php
-        if( isset($_GET["pokemon"])){
-            echo '<h2>' . $response["forms"]["0"]["name"] . ' #' . $response["id"] ."</h2>";
-            echo "<br>";
-            foreach ($types as $type) {
-                echo $type["type"]["name"] . "<br>";
-            }
-            echo "<br>";
-            echo "<br>". $flavourEnglish[array_rand($flavourEnglish, 1)] . "<br>";
-            echo "<br>";
-            foreach (array_rand($moves, 4)as $index ) {
-                echo $moves[$index]["move"]["name"] . "<br>";
-            }
-        }
-        ?>
-    </div>
-    <div class="search-container">
-        <div class="search-buttons">
-            <form action="index.php" method="get">
-                <input placeholder="Who's that Pokemon?"
-                       type="text" name="pokemon"
-                       class="search-bar"
-                       id="pokemon-search"
-                       autocomplete="false">
-                <button class="search-button hvr-buzz"
-                        type="submit"
-                        value="<img
+            ?>
+        </div>
+        <div class="search-container">
+            <div class="search-buttons">
+                <form action="index.php" method="get">
+                    <input placeholder="Who's that Pokemon?"
+                           type="text" name="pokemon"
+                           class="search-bar"
+                           id="pokemon-search"
+                           autocomplete="false">
+                    <button class="search-button hvr-buzz"
+                            type="submit"
+                            value="<img
 
                 src='https://cdn.emojidex.com/emoji/seal/pokeball.png'
                 emoji-code='pokeball'
                 alt='pokeball'
                 />"
-                        id="submit"><img
-                            class="pokeball hvr-buzz"
-                            src="https://cdn.emojidex.com/emoji/seal/pokeball.png"
-                            emoji-code="pokeball"
-                            alt="pokeball">
-                </button>
-                <div class="button toggle-previous button-3" id="random-button">
-                    <div id="circle"></div>
-                    <a href="#">Random</a>
-                </div>
-            </form>
+                            id="submit"><img
+                                class="pokeball hvr-buzz"
+                                src="https://cdn.emojidex.com/emoji/seal/pokeball.png"
+                                emoji-code="pokeball"
+                                alt="pokeball">
+                    </button>
+                    <div class="button toggle-previous button-3" id="random-button">
+                        <div id="circle"></div>
+                        <a href="#">Random</a>
+                    </div>
+                </form>
+            </div>
         </div>
     </div>
 </div>
-
-
-
 </body>
 </html>
-
-
